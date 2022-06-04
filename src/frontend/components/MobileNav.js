@@ -23,7 +23,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
   return (
     <Flex
-      ml={{ base: 0, md: 60 }}
+      ml={{ base: 0, md: 72 }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
