@@ -1,5 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import { SignInPage, SignUpPage } from "../../pages";
+import { RequireAuth } from "../../components";
+import {
+  BookmarksPage,
+  ExplorePage,
+  FeedPage,
+  ProfilePage,
+  SignInPage,
+  SignUpPage,
+} from "../../pages";
 import { Header } from "../Header";
 import { SidebarWithHeader } from "../SidebarWithHeader";
 
@@ -11,10 +19,38 @@ const Main = () => {
         <Route path="/signup" element={<SignUpPage />} />
       </Route>
       <Route element={<SidebarWithHeader />}>
-        <Route path="/profile" element={<>Profile</>} />
-        <Route path="/" element={<>Feed</>} />
-        <Route path="/explore" element={<>Explore</>} />
-        <Route path="/bookmarks" element={<>Bookmarks</>} />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <FeedPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/explore"
+          element={
+            <RequireAuth>
+              <ExplorePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/bookmarks"
+          element={
+            <RequireAuth>
+              <BookmarksPage />
+            </RequireAuth>
+          }
+        />
       </Route>
     </Routes>
   );
