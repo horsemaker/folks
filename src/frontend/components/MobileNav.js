@@ -12,18 +12,38 @@ import {
   MenuList,
   Text,
   useColorModeValue,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiMenu } from "react-icons/fi";
+import { useDispatch } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { FOLKS_AUTH_USER_DATA, FOLKS_AUTH_USER_TOKEN } from "../constants";
+import { signout } from "../features";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 
 const MobileNav = ({ onOpen, ...rest }) => {
   const colorModeValue = useColorModeValue(true, false);
+  const toast = useToast();
+
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(signout());
+    localStorage.removeItem(FOLKS_AUTH_USER_TOKEN);
+    localStorage.removeItem(FOLKS_AUTH_USER_DATA);
+    toast({
+      title: "Signed Out!",
+      description: "You have signed out successfully.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   return (
     <Flex
-      ml={{ base: 0, md: 72 }}
+      ml={{ base: "0", md: "56", lg: "64", xl: "72" }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
@@ -63,7 +83,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={"sm"} name="Yash Ghodekar" src="" />
+                <Avatar
+                  size={"sm"}
+                  name="Yash Ghodekar"
+                  src="https://avatars.githubusercontent.com/u/60985700?v=4"
+                />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"
@@ -93,7 +117,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               >
                 Profile
               </MenuItem>
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
