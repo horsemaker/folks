@@ -1,7 +1,13 @@
 export { ColorModeSwitcher } from "./ColorModeSwitcher";
+export { CreatePost } from "./CreatePost";
+export { FiltersSection } from "./FiltersSection";
 export { ListHeader } from "./ListHeader";
 export { MobileNav } from "./MobileNav";
 export { NavItem } from "./NavItem";
+export { PostsSection } from "./PostsSection";
+export { ProfileSection } from "./ProfileSection";
+export { RequireAuth } from "./RequireAuth";
 export { ScrollToTop } from "./ScrollToTop";
 export { SidebarContent } from "./SidebarContent";
 export { SocialButton } from "./SocialButton";
+export { SuggestedProfiles } from "./SuggestedProfiles";

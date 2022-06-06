@@ -34,7 +34,10 @@ const SidebarWithHeader = () => {
           </DrawerContent>
         </Drawer>
         <MobileNav onOpen={onOpen} />
-        <Box ml={{ base: 0, md: 72 }} p="4">
+        <Box
+          ml={{ base: "0", md: "56", lg: "64", xl: "72" }}
+          px={{ base: "4", md: "6", lg: "8" }}
+        >
           <Outlet />
         </Box>
       </Box>
