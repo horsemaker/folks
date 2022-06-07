@@ -1,6 +1,12 @@
 import { Avatar, Button, Flex, Text, Textarea } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CreatePost = () => {
+  const { avatarURL, firstName, lastName, username } = useSelector(
+    (state) => state.auth.user
+  );
+
   return (
     <Flex
       width={"full"}
@@ -11,13 +17,20 @@ const CreatePost = () => {
     >
       <Flex gap={2}>
         <Avatar
-          name="Yash Ghodekar"
-          src={"https://avatars.githubusercontent.com/u/60985700?v=4"}
-          alt={"Author"}
+          as={Link}
+          to={`/profile/${username}`}
+          name={`${firstName} ${lastName}`}
+          src={avatarURL}
+          alt={username}
         />
-        <Flex direction={"column"} fontSize={"sm"}>
-          <Text fontWeight={600}>Yash Ghodekar</Text>
-          <Text color={"gray.500"}>@horsemaker</Text>
+        <Flex
+          direction={"column"}
+          fontSize={"sm"}
+          as={Link}
+          to={`/profile/${username}`}
+        >
+          <Text fontWeight={600}>{`${firstName} ${lastName}`}</Text>
+          <Text color={"gray.500"}>@{username}</Text>
         </Flex>
       </Flex>
       <Textarea
