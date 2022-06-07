@@ -8,8 +8,22 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
-const ProfileSection = () => {
+const ProfileSection = ({ profile }) => {
+  const {
+    firstName,
+    lastName,
+    avatarURL,
+    username,
+    bio,
+    website,
+    following,
+    followers,
+  } = profile;
+
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <Flex
       gap={{ base: "2", sm: "6" }}
@@ -18,13 +32,14 @@ const ProfileSection = () => {
       pb={"2"}
     >
       <Image
-        name="Yash Ghodekar"
+        name={`${firstName} ${lastName}`}
+        rounded={"full"}
         boxSize={{
           base: "75px",
           xl: "150px",
         }}
-        src={"https://avatars.githubusercontent.com/u/60985700?v=4"}
-        alt={"Author"}
+        src={avatarURL}
+        alt={username}
       />
       <Flex
         py={{ base: "0", xl: "2" }}
@@ -35,38 +50,44 @@ const ProfileSection = () => {
         <Flex justifyContent={"space-between"}>
           <Flex direction={"column"}>
             <Heading fontSize={{ base: "2xl", xl: "3xl" }}>
-              Yash Ghodekar
+              {`${firstName} ${lastName}`}
             </Heading>
             <Text fontSize={"md"} color={"gray.500"}>
-              @horsemaker
+              @{username}
             </Text>
           </Flex>
-          <Button px={4} fontSize={"sm"} rounded={"full"}>
-            Edit
-          </Button>
+          {user.username === username ? (
+            <Button px={4} fontSize={"sm"} rounded={"full"}>
+              Edit
+            </Button>
+          ) : (
+            <Button px={4} fontSize={"sm"} rounded={"full"}>
+              Follow
+            </Button>
+          )}
         </Flex>
-        <Text fontSize={{ base: "lg", md: "xl" }}>because, why not? 🦄</Text>
+        <Text fontSize={{ base: "lg", md: "xl" }}>{bio}</Text>
         <Flex
-        mt={"2"}
+          mt={"2"}
           alignItems={"center"}
           gap={"2"}
           fontSize={{ base: "sm" }}
           color={useColorModeValue("blue.800", "blue.300")}
         >
           <LinkIcon />
-          <Link as={"a"} target="_blank" href="https://peerlist.io/horsemaker">
-            peerlist.io/horsemaker
+          <Link as={"a"} target="_blank" href={website}>
+            {website.slice(8)}
           </Link>
         </Flex>
         <Flex gap={"2"}>
           <Flex gap={"1"} alignItems={"center"}>
-            <Text fontWeight={"bold"}>100</Text>
+            <Text fontWeight={"bold"}>{following.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Following
             </Text>
           </Flex>
           <Flex gap={"1"} alignItems={"center"}>
-            <Text fontWeight={"bold"}>100</Text>
+            <Text fontWeight={"bold"}>{followers.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Followers
             </Text>
