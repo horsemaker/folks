@@ -16,7 +16,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { FiChevronDown, FiMenu } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { FOLKS_AUTH_USER_DATA, FOLKS_AUTH_USER_TOKEN } from "../constants";
 import { signout } from "../features";
@@ -26,6 +26,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   const colorModeValue = useColorModeValue(true, false);
   const toast = useToast();
 
+  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
@@ -85,8 +86,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack>
                 <Avatar
                   size={"sm"}
-                  name="Yash Ghodekar"
-                  src="https://avatars.githubusercontent.com/u/60985700?v=4"
+                  name={auth?.user?.firstName + auth?.user?.lastName}
+                  src={auth.user?.avatarURL}
                 />
                 <VStack
                   display={{ base: "none", md: "flex" }}
@@ -94,9 +95,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Yash Ghodekar</Text>
+                  <Text fontSize="sm">{`${auth?.user?.firstName} ${auth?.user?.lastName}`}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    horsemaker
+                    {auth?.user?.username}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -110,7 +111,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
             >
               <MenuItem
                 as={NavLink}
-                to="/profile"
+                to={`/profile/${auth?.user?.username}`}
                 _activeLink={{
                   background: colorModeValue ? "gray.300" : "whiteAlpha.300",
                 }}
