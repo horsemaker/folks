@@ -12,17 +12,24 @@ import {
   MdExplore,
   MdHome,
 } from "react-icons/md";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { NavItem } from "./NavItem";
 
-const LinkItems = [
-  { name: "Feed", icon: MdHome, path: "/" },
-  { name: "Explore", icon: MdExplore, path: "/explore" },
-  { name: "Bookmarks", icon: MdBookmarks, path: "/bookmarks" },
-  { name: "Profile", icon: MdAccountCircle, path: "/profile" },
-];
-
 const SidebarContent = ({ onClose, ...rest }) => {
+  const auth = useSelector((state) => state.auth);
+
+  const LinkItems = [
+    { name: "Feed", icon: MdHome, path: "/" },
+    { name: "Explore", icon: MdExplore, path: "/explore" },
+    { name: "Bookmarks", icon: MdBookmarks, path: "/bookmarks" },
+    {
+      name: "Profile",
+      icon: MdAccountCircle,
+      path: `/profile/${auth?.user?.username}`,
+    },
+  ];
+
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}

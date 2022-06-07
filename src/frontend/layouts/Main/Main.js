@@ -20,7 +20,7 @@ const Main = () => {
       </Route>
       <Route element={<SidebarWithHeader />}>
         <Route
-          path="/profile"
+          path="/profile/:username"
           element={
             <RequireAuth>
               <ProfilePage />

@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
 import { Post } from "./Post";
 
-const PostsSection = () => {
+const PostsSection = ({ posts }) => {
   return (
-    <Flex direction="column-reverse">
-      {[...Array(31).keys()].slice(1).map((post) => (
-        <Post key={post} post={post} />
+    <Flex flexGrow={"1"} direction="column-reverse" justifyContent={"start"}>
+      {posts.map((post) => (
+        <Post key={post._id} post={post} />
       ))}
     </Flex>
   );

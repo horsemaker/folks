@@ -1,10 +1,63 @@
-import { Flex, Heading, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  Heading,
+  Spinner,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { PostsSection, SuggestedProfiles } from "../../components";
 
 const ExplorePage = () => {
+  const toast = useToast();
+
+  const { data: posts, loading, error } = useSelector((state) => state.posts);
+
+  useEffect(() => {
+    if (error !== "") {
+      toast({
+        title: error.title,
+        description: error.description,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [error, toast]);
+
   return (
     <Flex gap={"12"} position={"relative"}>
-      <PostsSection />
+      {posts.length === 0 ? (
+        loading ? (
+          <Flex
+            direction={"column"}
+            flexGrow={"1"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="purple.500"
+              size="xl"
+            />
+          </Flex>
+        ) : (
+          <Flex
+            direction={"column"}
+            flexGrow={"1"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            No Posts Found
+          </Flex>
+        )
+      ) : (
+        <PostsSection posts={posts} />
+      )}
+
       <Flex
         display={{ base: "none", lg: "flex" }}
         position={"sticky"}
