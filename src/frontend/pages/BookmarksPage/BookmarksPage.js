@@ -19,6 +19,7 @@ const BookmarksPage = () => {
     loading,
     error,
   } = useSelector((state) => state.bookmarks);
+  const { data: posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,6 +37,10 @@ const BookmarksPage = () => {
       });
     }
   }, [error, toast]);
+
+  const bookmarkedPosts = posts.filter((post) =>
+    bookmarks.find((bookmarkedPost) => bookmarkedPost._id === post._id)
+  );
 
   return (
     <Flex gap={"12"} position={"relative"}>
@@ -66,7 +71,7 @@ const BookmarksPage = () => {
           </Flex>
         )
       ) : (
-        <PostsSection posts={bookmarks} />
+        <PostsSection posts={bookmarkedPosts} />
       )}
       <Flex
         display={{ base: "none", lg: "flex" }}
