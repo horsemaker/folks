@@ -18,7 +18,7 @@ export {
   dislikePostService,
   editPostService,
   getAllPostsService,
-  getAllUserPostsHandler,
+  getAllUserPostsService,
   getPostService,
   likePostService,
 } from "./posts-services";
