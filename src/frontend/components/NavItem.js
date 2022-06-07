@@ -26,7 +26,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
             {...rest}
           >
             {icon && <Icon mr="6" fontSize="28" as={icon} />}
-            <Text fontSize="larger">{children}</Text>
+            <Text fontSize="large">{children}</Text>
           </Flex>
         ) : (
           <Flex
@@ -53,7 +53,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
                 as={icon}
               />
             )}
-            <Text fontSize="larger">{children}</Text>
+            <Text fontSize="large">{children}</Text>
           </Flex>
         )
       }
