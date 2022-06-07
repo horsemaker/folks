@@ -9,7 +9,13 @@ function App() {
   const toast = useToast();
 
   const { error: postsError } = useSelector((state) => state.posts);
+  const { error: usersError } = useSelector((state) => state.users);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllPosts());
+    dispatch(getAllUsers());
+  }, [dispatch]);
 
   useEffect(() => {
     if (postsError !== "" && postsError.isOnlyPostError) {
@@ -24,9 +30,16 @@ function App() {
   }, [postsError, toast]);
 
   useEffect(() => {
-    dispatch(getAllPosts());
-    dispatch(getAllUsers());
-  }, [dispatch]);
+    if (usersError !== "") {
+      toast({
+        title: usersError.title,
+        description: usersError.description,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [usersError, toast]);
 
   return (
     <div className="App">
