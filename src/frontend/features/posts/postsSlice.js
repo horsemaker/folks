@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  createPostService,
+  deletePostService,
   dislikePostService,
+  editPostService,
   getAllPostsService,
   likePostService,
 } from "../../services";
@@ -26,6 +29,21 @@ const getAllPosts = createAsyncThunk(
   }
 );
 
+const createPost = createAsyncThunk(
+  "posts/createPost",
+  async ({ postData, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await createPostService(postData, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
 const likePost = createAsyncThunk(
   "posts/likePost",
   async ({ postId, token }, { rejectWithValue }) => {
@@ -35,7 +53,6 @@ const likePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue({
         title: "Try again!",
-        isOnlyPostError: true,
         description: "Something went wrong. Please try again.",
       });
     }
@@ -51,7 +68,36 @@ const dislikePost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue({
         title: "Try again!",
-        isOnlyPostError: true,
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
+const editPost = createAsyncThunk(
+  "posts/editPost",
+  async ({ postId, postData, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await editPostService(postId, postData, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
+const deletePost = createAsyncThunk(
+  "posts/deletePost",
+  async ({ postId, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await deletePostService(postId, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
         description: "Something went wrong. Please try again.",
       });
     }
@@ -74,12 +120,19 @@ const postsSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+    [createPost.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [createPost.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
     [likePost.fulfilled]: (state, { payload }) => {
       state.data = payload.posts;
       state.error = "";
     },
-    [likePost.rejected]: (state, action) => {
-      state.error = action.payload;
+    [likePost.rejected]: (state, { payload }) => {
+      state.error = payload;
     },
     [dislikePost.fulfilled]: (state, { payload }) => {
       state.data = payload.posts;
@@ -88,9 +141,31 @@ const postsSlice = createSlice({
     [dislikePost.rejected]: (state, { payload }) => {
       state.error = payload;
     },
+    [editPost.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [editPost.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
+    [deletePost.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [deletePost.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
   },
 });
 
 const postsReducer = postsSlice.reducer;
 
-export { postsReducer, getAllPosts, likePost, dislikePost };
+export {
+  postsReducer,
+  getAllPosts,
+  createPost,
+  likePost,
+  dislikePost,
+  editPost,
+  deletePost,
+};
