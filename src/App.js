@@ -18,7 +18,7 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (postsError !== "" && postsError.isOnlyPostError) {
+    if (postsError !== "") {
       toast({
         title: postsError.title,
         description: postsError.description,
