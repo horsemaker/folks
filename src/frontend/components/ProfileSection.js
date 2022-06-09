@@ -1,17 +1,25 @@
 import { LinkIcon } from "@chakra-ui/icons";
 import {
+  Avatar,
   Button,
   Flex,
   Heading,
-  Image,
   Link,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { followUser, unfollowUser } from "../features";
+import { EditProfileModal } from "./EditProfileModal";
 
 const ProfileSection = ({ profile }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = useRef(null);
+
   const {
+    _id,
     firstName,
     lastName,
     avatarURL,
@@ -22,7 +30,16 @@ const ProfileSection = ({ profile }) => {
     followers,
   } = profile;
 
-  const { user } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleFollowUser = () => {
+    dispatch(followUser({ followUserId: _id, token }));
+  };
+
+  const handleUnfollowUser = () => {
+    dispatch(unfollowUser({ followUserId: _id, token }));
+  };
 
   return (
     <Flex
@@ -31,7 +48,7 @@ const ProfileSection = ({ profile }) => {
       pt={"6"}
       pb={"2"}
     >
-      <Image
+      <Avatar
         name={`${firstName} ${lastName}`}
         rounded={"full"}
         boxSize={{
@@ -57,11 +74,25 @@ const ProfileSection = ({ profile }) => {
             </Text>
           </Flex>
           {user.username === username ? (
-            <Button px={4} fontSize={"sm"} rounded={"full"}>
+            <Button px={4} fontSize={"sm"} rounded={"full"} onClick={onOpen}>
               Edit
             </Button>
+          ) : user.following.find((user) => user.username === username) ? (
+            <Button
+              px={4}
+              fontSize={"sm"}
+              rounded={"full"}
+              onClick={handleUnfollowUser}
+            >
+              Following
+            </Button>
           ) : (
-            <Button px={4} fontSize={"sm"} rounded={"full"}>
+            <Button
+              px={4}
+              fontSize={"sm"}
+              rounded={"full"}
+              onClick={handleFollowUser}
+            >
               Follow
             </Button>
           )}
@@ -94,6 +125,12 @@ const ProfileSection = ({ profile }) => {
           </Flex>
         </Flex>
       </Flex>
+      <EditProfileModal
+        isOpen={isOpen}
+        onClose={onClose}
+        initialRef={initialRef}
+        profile={profile}
+      />
     </Flex>
   );
 };
