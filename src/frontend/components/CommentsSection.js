@@ -8,6 +8,7 @@ const CommentsSection = ({ postId, comments }) => {
   const toast = useToast();
 
   const [commentData, setCommentData] = useState({ text: "" });
+  const [isCommenting, setIsCommenting] = useState(false);
 
   const {
     token,
@@ -17,6 +18,7 @@ const CommentsSection = ({ postId, comments }) => {
 
   const handleAddComment = async () => {
     if (commentData.text !== "") {
+      setIsCommenting(true);
       const response = await dispatch(
         addPostComment({
           postId,
@@ -30,6 +32,7 @@ const CommentsSection = ({ postId, comments }) => {
           token,
         })
       );
+      setIsCommenting(false);
       if (response?.payload?.posts) {
         toast({
           title: "Comment posted!",
@@ -63,7 +66,11 @@ const CommentsSection = ({ postId, comments }) => {
             setCommentData({ ...commentData, text: e.target.value })
           }
         />
-        <Button colorScheme={"purple"} onClick={handleAddComment}>
+        <Button
+          isLoading={isCommenting}
+          colorScheme={"purple"}
+          onClick={handleAddComment}
+        >
           Comment
         </Button>
       </Flex>
