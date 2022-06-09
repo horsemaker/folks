@@ -1,5 +1,4 @@
 import { v4 as uuid } from "uuid";
-import { formatDate } from "../utils/authUtils";
 
 /**
  * Posts can be added here.
@@ -38,8 +37,8 @@ export const posts = [
     avatarURL:
       "https://pbs.twimg.com/profile_images/1528089482364612608/rTGaahib_400x400.jpg",
     username: "horsemaker",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 1, 2022"),
+    updatedAt: new Date("June 1, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -109,8 +108,8 @@ export const posts = [
     username: "NarhariKale4",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1413557784746991621/QA9i13a3_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 31, 2022"),
+    updatedAt: new Date("May 31, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -181,8 +180,8 @@ export const posts = [
     avatarURL:
       "https://pbs.twimg.com/profile_images/1528089482364612608/rTGaahib_400x400.jpg",
     username: "horsemaker",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 2, 2022"),
+    updatedAt: new Date("June 2, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -253,8 +252,8 @@ export const posts = [
     avatarURL:
       "https://pbs.twimg.com/profile_images/1528089482364612608/rTGaahib_400x400.jpg",
     username: "horsemaker",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 3, 2022"),
+    updatedAt: new Date("June 3, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -325,8 +324,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 28, 2022"),
+    updatedAt: new Date("May 28, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -397,8 +396,8 @@ export const posts = [
     username: "vijaytembugade",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1387873189917720581/3NfEA_sE_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 4, 2022"),
+    updatedAt: new Date("June 4, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -469,8 +468,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 27, 2022"),
+    updatedAt: new Date("May 27, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -541,8 +540,8 @@ export const posts = [
     username: "vijaytembugade",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1387873189917720581/3NfEA_sE_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 5, 2022"),
+    updatedAt: new Date("June 5, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -613,8 +612,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 24, 2022"),
+    updatedAt: new Date("May 24, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -685,8 +684,8 @@ export const posts = [
     username: "Neo_MonkStar",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1529104197613805568/iKazt9pT_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 6, 2022"),
+    updatedAt: new Date("June 6, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -757,8 +756,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 6, 2022"),
+    updatedAt: new Date("June 6, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -829,8 +828,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("June 7, 2022"),
+    updatedAt: new Date("June 7, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -901,8 +900,8 @@ export const posts = [
     username: "Neo_MonkStar",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1529104197613805568/iKazt9pT_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 6, 2022"),
+    updatedAt: new Date("May 6, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -973,8 +972,8 @@ export const posts = [
     username: "miheertamkhane",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1479650839660675075/B3bwE2Yk_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 16, 2022"),
+    updatedAt: new Date("May 16, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -1045,8 +1044,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 26, 2022"),
+    updatedAt: new Date("May 26, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -1117,8 +1116,8 @@ export const posts = [
     username: "LahaneVedant",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1413581804653617157/Lb6QIsaO_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 20, 2022"),
+    updatedAt: new Date("May 20, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -1189,8 +1188,8 @@ export const posts = [
     username: "miheertamkhane",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1479650839660675075/B3bwE2Yk_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 18, 2022"),
+    updatedAt: new Date("May 18, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -1261,8 +1260,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 15, 2022"),
+    updatedAt: new Date("May 15, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -1333,8 +1332,8 @@ export const posts = [
     username: "prathmesh_20",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1511020219250376713/zFRXcl9k_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 15, 2022"),
+    updatedAt: new Date("May 15, 2022"),
     comments: [
       {
         _id: uuid(),
@@ -1405,8 +1404,8 @@ export const posts = [
     username: "LahaneVedant",
     avatarURL:
       "https://pbs.twimg.com/profile_images/1413581804653617157/Lb6QIsaO_400x400.jpg",
-    createdAt: formatDate(),
-    updatedAt: formatDate(),
+    createdAt: new Date("May 14, 2022"),
+    updatedAt: new Date("May 14, 2022"),
     comments: [
       {
         _id: uuid(),
