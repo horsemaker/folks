@@ -1,10 +1,16 @@
-const giveFeedPosts = (posts, following, currentUsername) => {
-  const followingUsernames = following.map((user) => user.username);
-  return posts.filter(
-    (post) =>
-      followingUsernames.includes(post.username) ||
-      post.username === currentUsername
+import { giveFilteredFeedPosts } from "./giveFilteredFeedPosts";
+import { giveSortedFeedPosts } from "./giveSortedFeedPosts";
+
+const giveFeedPosts = (posts, following, currentUsername, sortBy) => {
+  const filteredFeedPosts = giveFilteredFeedPosts(
+    posts,
+    following,
+    currentUsername
   );
+
+  const sortedFeedPosts = giveSortedFeedPosts(filteredFeedPosts, sortBy);
+
+  return sortedFeedPosts;
 };
 
 export { giveFeedPosts };
