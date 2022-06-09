@@ -3,7 +3,7 @@ import { Post } from "./Post";
 
 const PostsSection = ({ posts }) => {
   return (
-    <Flex flexGrow={"1"} direction="column-reverse" justifyContent={"start"}>
+    <Flex flexGrow={"1"} direction="column" justifyContent={"start"}>
       {posts.map((post) => (
         <Post key={post._id} post={post} />
       ))}
