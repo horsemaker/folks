@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Flex, Icon, Link, Text, useColorModeValue } from "@chakra-ui/react";
 
-const NavItem = ({ icon, children, path, ...rest }) => {
+const NavItem = ({ icon, children, path, onClick, ...rest }) => {
   const colorModeValue = useColorModeValue(true, false);
 
   return (
@@ -10,6 +10,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
       to={path}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
+      onClick={onClick}
     >
       {({ isActive }) =>
         isActive ? (
