@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllUsersService } from "../../services";
+import {
+  followUserService,
+  getAllUsersService,
+  unfollowUserService,
+} from "../../services";
 
 const initialUsersState = {
   data: [],
@@ -12,6 +16,36 @@ const getAllUsers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await getAllUsersService();
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try reloading!",
+        description: "Unable to fetch users. Try reloading.",
+      });
+    }
+  }
+);
+
+const followUser = createAsyncThunk(
+  "users/followUser",
+  async ({ followUserId, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await followUserService(followUserId, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try reloading!",
+        description: "Unable to fetch users. Try reloading.",
+      });
+    }
+  }
+);
+
+const unfollowUser = createAsyncThunk(
+  "users/unfollowUser",
+  async ({ followUserId, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await unfollowUserService(followUserId, token);
       return data;
     } catch (error) {
       return rejectWithValue({
@@ -38,9 +72,23 @@ const usersSlice = createSlice({
       state.loading = false;
       state.error = payload;
     },
+    [followUser.fulfilled]: (state, { payload }) => {
+      state.data = payload.users;
+      state.error = "";
+    },
+    [followUser.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
+    [unfollowUser.fulfilled]: (state, { payload }) => {
+      state.data = payload.users;
+      state.error = "";
+    },
+    [unfollowUser.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
   },
 });
 
 const usersReducer = usersSlice.reducer;
 
-export { usersReducer, getAllUsers };
+export { usersReducer, getAllUsers, followUser, unfollowUser };
