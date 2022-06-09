@@ -4,3 +4,4 @@ export { FeedPage } from "./FeedPage";
 export { ProfilePage } from "./ProfilePage";
 export { SignInPage } from "./SignInPage";
 export { SignUpPage } from "./SignUpPage";
+export { SinglePostPage } from "./SinglePostPage";

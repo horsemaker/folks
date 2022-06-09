@@ -1,9 +1,11 @@
 export { ColorModeSwitcher } from "./ColorModeSwitcher";
+export { CommentsSection } from "./CommentsSection";
 export { CreatePost } from "./CreatePost";
 export { FiltersSection } from "./FiltersSection";
 export { ListHeader } from "./ListHeader";
 export { MobileNav } from "./MobileNav";
 export { NavItem } from "./NavItem";
+export { Post } from "./Post";
 export { PostsSection } from "./PostsSection";
 export { ProfileSection } from "./ProfileSection";
 export { RequireAuth } from "./RequireAuth";
