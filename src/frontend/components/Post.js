@@ -1,22 +1,13 @@
 import { Icon } from "@chakra-ui/icons";
 import {
   Avatar,
-  Button,
   Flex,
   IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
-  Textarea,
   useColorModeValue,
   useDisclosure,
   useToast,
@@ -37,7 +28,7 @@ import {
 } from "react-icons/md";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   bookmarkPost,
   deletePost,
@@ -46,6 +37,7 @@ import {
   likePost,
   removePostFromBookmark,
 } from "../features";
+import { EditPostModal } from "./EditPostModal";
 
 const Post = ({ post }) => {
   const colorModeValue = useColorModeValue(true, false);
@@ -73,20 +65,25 @@ const Post = ({ post }) => {
   const dispatch = useDispatch();
 
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  const handleLikePost = () => {
+  const handleLikePost = (e) => {
+    e.stopPropagation();
     dispatch(likePost({ postId: _id, token }));
   };
 
-  const handleDisikePost = () => {
+  const handleDisikePost = (e) => {
+    e.stopPropagation();
     dispatch(dislikePost({ postId: _id, token }));
   };
 
-  const handleBookmarkPost = () => {
+  const handleBookmarkPost = (e) => {
+    e.stopPropagation();
     dispatch(bookmarkPost({ postId: _id, token }));
   };
 
-  const handleRemovePostFromBookmark = () => {
+  const handleRemovePostFromBookmark = (e) => {
+    e.stopPropagation();
     dispatch(removePostFromBookmark({ postId: _id, token }));
   };
 
@@ -142,6 +139,7 @@ const Post = ({ post }) => {
       py={"6"}
       borderTopWidth={"1px"}
       borderTopColor={useColorModeValue("gray.200", "gray.700")}
+      onClick={() => navigate(`/post/${_id}`)}
     >
       <Avatar
         name={`${firstName} ${lastName}`}
@@ -149,11 +147,17 @@ const Post = ({ post }) => {
         alt={username}
         as={Link}
         to={`/profile/${username}`}
+        onClick={(e) => e.stopPropagation()}
       />
       <Flex flexGrow={"1"} direction={"column"} gap={"1"}>
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
-            <Flex direction={"column"} as={Link} to={`/profile/${username}`}>
+            <Flex
+              direction={"column"}
+              as={Link}
+              to={`/profile/${username}`}
+              onClick={(e) => e.stopPropagation()}
+            >
               <Text
                 fontWeight={600}
                 _hover={{ textDecoration: "underline" }}
@@ -175,10 +179,12 @@ const Post = ({ post }) => {
                 icon={<MdMoreVert />}
                 variant={"ghost"}
                 rounded={"full"}
+                onClick={(e) => e.stopPropagation()}
               />
               <MenuList
                 bg={colorModeValue ? "white" : "gray.900"}
                 borderColor={colorModeValue ? "gray.200" : "gray.700"}
+                onClick={(e) => e.stopPropagation()}
               >
                 <MenuItem icon={<MdEdit />} onClick={onOpen}>
                   Edit Post
@@ -202,6 +208,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "green.500" : "green.200" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {likedBy.find(({ username }) => username === user.username) ? (
               <Icon fontSize={"20"} as={MdThumbUp} />
@@ -221,6 +228,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "red.500" : "red.200" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {dislikedBy.find(({ username }) => username === user.username) ? (
               <Icon fontSize={"20"} as={MdThumbDown} />
@@ -246,6 +254,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "purple.500" : "purple.300" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {bookmarks.find((post) => post._id === _id) ? (
               <Icon
@@ -263,64 +272,20 @@ const Post = ({ post }) => {
           </Flex>
         </Flex>
       </Flex>
-      {/* Modal */}
-      <Modal
+      <EditPostModal
         isOpen={isOpen}
         onClose={onClose}
-        initialFocusRef={initialRef}
-        isCentered
-        scrollBehavior={"inside"}
-      >
-        <ModalOverlay />
-        <ModalContent bg={useColorModeValue("white", "gray.900")}>
-          <ModalHeader>Editing Post</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex direction={"column"} gap={"3"}>
-              <Flex gap={2}>
-                <Avatar
-                  name={`${firstName} ${lastName}`}
-                  src={avatarURL}
-                  alt={username}
-                />
-                <Flex direction={"column"} fontSize={"sm"}>
-                  <Text fontWeight={600}>{`${firstName} ${lastName}`}</Text>
-                  <Text color={"gray.500"}>@{username}</Text>
-                </Flex>
-              </Flex>
-              <Textarea
-                ref={initialRef}
-                placeContent={"What's happening?"}
-                value={postData.content}
-                onChange={(e) =>
-                  setPostData({ ...postData, content: e.target.value })
-                }
-                onFocus={(e) => {
-                  const val = e.target.value;
-                  e.target.value = "";
-                  e.target.value = val;
-                }}
-              />
-            </Flex>
-          </ModalBody>
-          <ModalFooter>
-            <Flex gap={"2"}>
-              <Button colorScheme={"purple"} variant="ghost" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button
-                isLoading={isEditing}
-                colorScheme={"purple"}
-                mr={3}
-                onClick={handleEditPost}
-              >
-                Save
-              </Button>
-            </Flex>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {/* Modal */}
+        initialRef={initialRef}
+        firstName={firstName}
+        lastName={lastName}
+        avatarURL={avatarURL}
+        username={username}
+        content={content}
+        setPostData={setPostData}
+        postData={postData}
+        isEditing={isEditing}
+        handleEditPost={handleEditPost}
+      />
     </Flex>
   );
 };
