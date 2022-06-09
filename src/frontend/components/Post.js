@@ -9,7 +9,10 @@ import {
   MenuList,
   Text,
   useColorModeValue,
+  useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import { FaCircle } from "react-icons/fa";
 import {
   MdBookmark,
@@ -25,16 +28,22 @@ import {
 } from "react-icons/md";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   bookmarkPost,
+  deletePost,
   dislikePost,
+  editPost,
   likePost,
   removePostFromBookmark,
 } from "../features";
+import { EditPostModal } from "./EditPostModal";
 
 const Post = ({ post }) => {
   const colorModeValue = useColorModeValue(true, false);
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = useRef(null);
 
   const {
     _id,
@@ -48,24 +57,78 @@ const Post = ({ post }) => {
     comments,
   } = post;
 
+  const [postData, setPostData] = useState({ content });
+  const [isEditing, setIsEditing] = useState(false);
+
   const { token, user } = useSelector((state) => state.auth);
   const { data: bookmarks } = useSelector((state) => state.bookmarks);
   const dispatch = useDispatch();
 
-  const handleLikePost = () => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const handleLikePost = (e) => {
+    e.stopPropagation();
     dispatch(likePost({ postId: _id, token }));
   };
 
-  const handleDisikePost = () => {
+  const handleDisikePost = (e) => {
+    e.stopPropagation();
     dispatch(dislikePost({ postId: _id, token }));
   };
 
-  const handleBookmarkPost = () => {
+  const handleBookmarkPost = (e) => {
+    e.stopPropagation();
     dispatch(bookmarkPost({ postId: _id, token }));
   };
 
-  const handleRemovePostFromBookmark = () => {
+  const handleRemovePostFromBookmark = (e) => {
+    e.stopPropagation();
     dispatch(removePostFromBookmark({ postId: _id, token }));
+  };
+
+  const handleEditPost = async () => {
+    if (postData.content !== "") {
+      setIsEditing(true);
+      const response = await dispatch(
+        editPost({ postId: _id, postData, token })
+      );
+      if (response?.payload?.posts !== undefined) {
+        toast({
+          title: "Post Edited!",
+          description: "Your post has been edited successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        onClose();
+      }
+      setIsEditing(false);
+    } else {
+      toast({
+        title: "Empty Post!",
+        description: "Post can't be left empty.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleDeletePost = async () => {
+    if (pathname === "/bookmarks") {
+      dispatch(removePostFromBookmark({ postId: _id, token }));
+    }
+    const response = await dispatch(deletePost({ postId: _id, token }));
+    if (response?.payload?.posts !== undefined) {
+      toast({
+        title: "Post Deleted!",
+        description: "Your post has been deleted successfully.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -76,6 +139,7 @@ const Post = ({ post }) => {
       py={"6"}
       borderTopWidth={"1px"}
       borderTopColor={useColorModeValue("gray.200", "gray.700")}
+      onClick={() => navigate(`/post/${_id}`)}
     >
       <Avatar
         name={`${firstName} ${lastName}`}
@@ -83,11 +147,17 @@ const Post = ({ post }) => {
         alt={username}
         as={Link}
         to={`/profile/${username}`}
+        onClick={(e) => e.stopPropagation()}
       />
       <Flex flexGrow={"1"} direction={"column"} gap={"1"}>
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
-            <Flex direction={"column"} as={Link} to={`/profile/${username}`}>
+            <Flex
+              direction={"column"}
+              as={Link}
+              to={`/profile/${username}`}
+              onClick={(e) => e.stopPropagation()}
+            >
               <Text
                 fontWeight={600}
                 _hover={{ textDecoration: "underline" }}
@@ -109,13 +179,19 @@ const Post = ({ post }) => {
                 icon={<MdMoreVert />}
                 variant={"ghost"}
                 rounded={"full"}
+                onClick={(e) => e.stopPropagation()}
               />
               <MenuList
                 bg={colorModeValue ? "white" : "gray.900"}
                 borderColor={colorModeValue ? "gray.200" : "gray.700"}
+                onClick={(e) => e.stopPropagation()}
               >
-                <MenuItem icon={<MdEdit />}>Edit Post</MenuItem>
-                <MenuItem icon={<MdDelete />}>Delete Post</MenuItem>
+                <MenuItem icon={<MdEdit />} onClick={onOpen}>
+                  Edit Post
+                </MenuItem>
+                <MenuItem icon={<MdDelete />} onClick={handleDeletePost}>
+                  Delete Post
+                </MenuItem>
               </MenuList>
             </Menu>
           )}
@@ -132,6 +208,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "green.500" : "green.200" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {likedBy.find(({ username }) => username === user.username) ? (
               <Icon fontSize={"20"} as={MdThumbUp} />
@@ -151,6 +228,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "red.500" : "red.200" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {dislikedBy.find(({ username }) => username === user.username) ? (
               <Icon fontSize={"20"} as={MdThumbDown} />
@@ -176,6 +254,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "purple.500" : "purple.300" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {bookmarks.find((post) => post._id === _id) ? (
               <Icon
@@ -193,6 +272,20 @@ const Post = ({ post }) => {
           </Flex>
         </Flex>
       </Flex>
+      <EditPostModal
+        isOpen={isOpen}
+        onClose={onClose}
+        initialRef={initialRef}
+        firstName={firstName}
+        lastName={lastName}
+        avatarURL={avatarURL}
+        username={username}
+        content={content}
+        setPostData={setPostData}
+        postData={postData}
+        isEditing={isEditing}
+        handleEditPost={handleEditPost}
+      />
     </Flex>
   );
 };

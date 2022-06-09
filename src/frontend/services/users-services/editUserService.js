@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const updateUserService = async (userData, token) => {
+const editUserService = async (userData, token) => {
   const response = axios.post(
     "/api/users/edit",
     { userData },
@@ -9,4 +9,4 @@ const updateUserService = async (userData, token) => {
   return response;
 };
 
-export { updateUserService };
+export { editUserService };

@@ -35,7 +35,6 @@ const bookmarkPost = createAsyncThunk(
     } catch (error) {
       return rejectWithValue({
         title: "Try again!",
-        isPostError: true,
         description: "Something went wrong. Please try again.",
       });
     }
@@ -51,7 +50,6 @@ const removePostFromBookmark = createAsyncThunk(
     } catch (error) {
       return rejectWithValue({
         title: "Try again!",
-        isPostError: true,
         description: "Something went wrong. Please try again.",
       });
     }

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { FOLKS_AUTH_USER_DATA, FOLKS_AUTH_USER_TOKEN } from "../../constants";
 import { signInService, signUpService } from "../../services";
+import { followUser, unfollowUser } from "../users";
 
 const initialAuthState = {
   token: localStorage.getItem(FOLKS_AUTH_USER_TOKEN),
@@ -64,11 +65,17 @@ const authSlice = createSlice({
     [signup.rejected]: (state) => {
       state.loading = false;
     },
+    [followUser.fulfilled]: (state, { payload }) => {
+      state.user = payload.currentUser;
+    },
+    [unfollowUser.fulfilled]: (state, { payload }) => {
+      state.user = payload.currentUser;
+    },
   },
 });
 
-const { signout } = authSlice.actions;
+const { signout, updateUser } = authSlice.actions;
 
 const authReducer = authSlice.reducer;
 
-export { authReducer, signin, signup, signout };
+export { authReducer, signin, signup, signout, updateUser };

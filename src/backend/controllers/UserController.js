@@ -239,7 +239,15 @@ export const followUserHandler = function (schema, request) {
       { _id: followUser._id },
       { ...updatedFollowUser, updatedAt: formatDate() }
     );
-    return new Response(200, {}, { users: this.db.users });
+    return new Response(
+      200,
+      {},
+      {
+        users: this.db.users,
+        currentUser: updatedUser,
+        followUser: updatedFollowUser,
+      }
+    );
   } catch (error) {
     return new Response(
       500,
@@ -300,7 +308,15 @@ export const unfollowUserHandler = function (schema, request) {
       { _id: followUser._id },
       { ...updatedFollowUser, updatedAt: formatDate() }
     );
-    return new Response(200, {}, { users: this.db.users });
+    return new Response(
+      200,
+      {},
+      {
+        users: this.db.users,
+        currentUser: updatedUser,
+        followUser: updatedFollowUser,
+      }
+    );
   } catch (error) {
     return new Response(
       500,

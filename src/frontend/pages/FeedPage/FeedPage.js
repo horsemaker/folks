@@ -12,14 +12,15 @@ const FeedPage = () => {
   const {
     user: { following, username },
   } = useSelector((state) => state.auth);
+  const { sortBy } = useSelector((state) => state.filters);
   const { data: posts } = useSelector((state) => state.posts);
 
-  const feedPosts = giveFeedPosts(posts, following, username);
+  const feedPosts = giveFeedPosts(posts, following, username, sortBy);
 
   return (
     <Flex gap={"12"} position={"relative"}>
       <Flex flexGrow={"1"} direction={"column"} gap={"4"}>
-        <Box display={{ base: "block", lg: "none" }}>
+        <Box display={{ base: "block", lg: "none" }} mt={"2"}>
           <FiltersSection />
         </Box>
         <CreatePost />

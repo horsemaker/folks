@@ -7,6 +7,7 @@ import {
   ProfilePage,
   SignInPage,
   SignUpPage,
+  SinglePostPage,
 } from "../../pages";
 import { Header } from "../Header";
 import { SidebarWithHeader } from "../SidebarWithHeader";
@@ -18,39 +19,14 @@ const Main = () => {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
       </Route>
-      <Route element={<SidebarWithHeader />}>
-        <Route
-          path="/profile/:username"
-          element={
-            <RequireAuth>
-              <ProfilePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <RequireAuth>
-              <FeedPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/explore"
-          element={
-            <RequireAuth>
-              <ExplorePage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/bookmarks"
-          element={
-            <RequireAuth>
-              <BookmarksPage />
-            </RequireAuth>
-          }
-        />
+      <Route element={<RequireAuth />}>
+        <Route element={<SidebarWithHeader />}>
+          <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/" element={<FeedPage />} />
+          <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/bookmarks" element={<BookmarksPage />} />
+          <Route path="/post/:postId" element={<SinglePostPage />} />
+        </Route>
       </Route>
     </Routes>
   );

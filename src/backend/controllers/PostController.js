@@ -87,6 +87,10 @@ export const createPostHandler = function (schema, request) {
         dislikedBy: [],
       },
       username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      avatarURL: user.avatarURL,
+      comments: [],
       createdAt: formatDate(),
       updatedAt: formatDate(),
     };
@@ -134,7 +138,7 @@ export const editPostHandler = function (schema, request) {
         }
       );
     }
-    post = { ...post, ...postData };
+    post = { ...post, ...postData, updatedAt: formatDate() };
     this.db.posts.update({ _id: postId }, post);
     return new Response(201, {}, { posts: this.db.posts });
   } catch (error) {

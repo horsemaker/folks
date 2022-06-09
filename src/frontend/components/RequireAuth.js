@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-const RequireAuth = ({ children }) => {
+const RequireAuth = () => {
   const { token } = useSelector((state) => state.auth);
   const location = useLocation();
 
   return token ? (
-    children
+    <Outlet />
   ) : (
     <Navigate to="/signin" state={{ from: location }} replace />
   );

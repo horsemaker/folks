@@ -1,48 +1,32 @@
-import {
-  Box,
-  Flex,
-  Heading,
-  Spinner,
-  useColorModeValue,
-  useToast,
-} from "@chakra-ui/react";
+import { Flex, Heading, Spinner, useColorModeValue } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  FiltersSection,
-  PostsSection,
-  SuggestedProfiles,
-} from "../../components";
-import { giveExplorePosts } from "../../utils";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { CommentsSection, Post, SuggestedProfiles } from "../../components";
+import { getPost, postCleanup } from "../../features";
 
-const ExplorePage = () => {
-  const toast = useToast();
+const SinglePostPage = () => {
+  const { postId } = useParams();
 
-  const { data: posts, loading, error } = useSelector((state) => state.posts);
-  const { show } = useSelector((state) => state.filters);
+  const { data: post, loading: postLoading } = useSelector(
+    (state) => state.post
+  );
+  const { data: posts } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (error !== "") {
-      toast({
-        title: error.title,
-        description: error.description,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  }, [error, toast]);
+    dispatch(getPost(postId));
+  }, [dispatch, postId, posts]);
 
-  const explorePosts = giveExplorePosts(posts, show);
+  useEffect(() => {
+    return () => dispatch(postCleanup());
+  }, [dispatch, postId]);
 
   return (
     <Flex gap={"12"} position={"relative"}>
       <Flex flexGrow={"1"} direction={"column"} gap={"4"}>
-        <Box display={{ base: "block", lg: "none" }} mt={"2"}>
-          <FiltersSection />
-        </Box>
-        {posts.length === 0 ? (
-          loading ? (
+        {post === null ? (
+          postLoading ? (
             <Flex
               direction={"column"}
               flexGrow={"1"}
@@ -64,11 +48,14 @@ const ExplorePage = () => {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              No Posts Found
+              No Post Found!
             </Flex>
           )
         ) : (
-          <PostsSection posts={explorePosts} />
+          <>
+            <Post post={post} />
+            <CommentsSection postId={postId} comments={post.comments} />
+          </>
         )}
       </Flex>
       <Flex
@@ -84,7 +71,6 @@ const ExplorePage = () => {
         minW={{ base: "52", lg: "72", xl: "80" }}
         bgColor={useColorModeValue("gray.100", "gray.800")}
       >
-        <FiltersSection />
         <Heading fontSize={"2xl"}>Suggested</Heading>
         <SuggestedProfiles />
       </Flex>
@@ -92,4 +78,4 @@ const ExplorePage = () => {
   );
 };
 
-export { ExplorePage };
+export { SinglePostPage };

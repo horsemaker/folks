@@ -23,9 +23,9 @@ export {
   likePostService,
 } from "./posts-services";
 export {
+  editUserService,
   followUserService,
   getAllUsersService,
   getUserService,
   unfollowUserService,
-  updateUserService,
 } from "./users-services";
