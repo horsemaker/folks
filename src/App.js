@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { Box, useColorModeValue, useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ScrollToTop } from "./frontend/components";
@@ -42,11 +42,11 @@ function App() {
   }, [usersError, toast]);
 
   return (
-    <div className="App">
+    <Box bg={useColorModeValue("white", "gray.900")}>
       <ScrollToTop>
         <Main />
       </ScrollToTop>
-    </div>
+    </Box>
   );
 }
 
