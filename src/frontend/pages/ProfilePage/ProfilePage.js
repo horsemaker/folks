@@ -24,13 +24,16 @@ const ProfilePage = () => {
     profile: { data: profile, loading: profileLoading, error: profileError },
     posts: { data: posts, loading: postsLoading, error: postsError },
   } = useSelector((state) => state.user);
+  const { data: users } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser(username));
-    dispatch(getAllUserPosts(username));
     return () => dispatch(userCleanup());
   }, [dispatch, username]);
+
+  useEffect(() => {
+    dispatch(getUser(username));
+  }, [dispatch, username, users]);
 
   useEffect(() => {
     dispatch(getAllUserPosts(username));
