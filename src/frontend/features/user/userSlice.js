@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllUserPostsService, getUserService } from "../../services";
+import {
+  editUserService,
+  getAllUserPostsService,
+  getUserService,
+} from "../../services";
 
 const initialUserState = {
   profile: {
@@ -44,12 +48,32 @@ const getAllUserPosts = createAsyncThunk(
   }
 );
 
+const editUser = createAsyncThunk(
+  "user/editUser",
+  async ({ userData, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await editUserService(userData, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try reloading!",
+        description: "Unable to fetch user posts. Try reloading again.",
+      });
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: initialUserState,
   reducers: {
     userCleanup: (state) => {
-      state = initialUserState;
+      state.profile.data = null;
+      state.profile.loading = false;
+      state.profile.error = "";
+      state.posts.data = null;
+      state.posts.loading = false;
+      state.posts.error = "";
     },
   },
   extraReducers: {
@@ -77,6 +101,18 @@ const userSlice = createSlice({
       state.posts.loading = false;
       state.posts.error = payload;
     },
+    [editUser.pending]: (state) => {
+      state.profile.loading = true;
+    },
+    [editUser.fulfilled]: (state, { payload }) => {
+      state.profile.data = payload.user;
+      state.profile.loading = false;
+      state.profile.error = "";
+    },
+    [editUser.rejected]: (state, { payload }) => {
+      state.profile.loading = false;
+      state.profile.error = payload;
+    },
   },
 });
 
@@ -84,4 +120,4 @@ const { userCleanup } = userSlice.actions;
 
 const userReducer = userSlice.reducer;
 
-export { userReducer, getUser, getAllUserPosts, userCleanup };
+export { userReducer, getUser, getAllUserPosts, editUser, userCleanup };
