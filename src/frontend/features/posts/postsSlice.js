@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
+  addPostCommentService,
   createPostService,
+  deletePostCommentService,
   deletePostService,
   dislikePostService,
+  downvotePostCommentService,
+  editPostCommentService,
   editPostService,
   getAllPostsService,
   likePostService,
+  upvotePostCommentService,
 } from "../../services";
 
 const initialPostsState = {
@@ -104,6 +109,90 @@ const deletePost = createAsyncThunk(
   }
 );
 
+const addPostComment = createAsyncThunk(
+  "posts/addPostComment",
+  async ({ postId, commentData, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await addPostCommentService(postId, commentData, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
+const upvotePostComment = createAsyncThunk(
+  "posts/upvotePostComment",
+  async ({ postId, commentId, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await upvotePostCommentService(postId, commentId, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
+const downvotePostComment = createAsyncThunk(
+  "posts/downvotePostComment",
+  async ({ postId, commentId, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await downvotePostCommentService(
+        postId,
+        commentId,
+        token
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
+const deletePostComment = createAsyncThunk(
+  "posts/deletePostComment",
+  async ({ postId, commentId, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await deletePostCommentService(postId, commentId, token);
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
+const editPostComment = createAsyncThunk(
+  "posts/editPostComment",
+  async ({ postId, commentId, commentData, token }, { rejectWithValue }) => {
+    try {
+      const { data } = await editPostCommentService(
+        postId,
+        commentId,
+        commentData,
+        token
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        title: "Try again!",
+        description: "Something went wrong. Please try again.",
+      });
+    }
+  }
+);
+
 const postsSlice = createSlice({
   name: "posts",
   initialState: initialPostsState,
@@ -155,6 +244,41 @@ const postsSlice = createSlice({
     [deletePost.rejected]: (state, { payload }) => {
       state.error = payload;
     },
+    [addPostComment.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [addPostComment.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
+    [upvotePostComment.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [upvotePostComment.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
+    [downvotePostComment.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [downvotePostComment.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
+    [deletePostComment.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [deletePostComment.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
+    [editPostComment.fulfilled]: (state, { payload }) => {
+      state.data = payload.posts;
+      state.error = "";
+    },
+    [editPostComment.rejected]: (state, { payload }) => {
+      state.error = payload;
+    },
   },
 });
 
@@ -168,4 +292,9 @@ export {
   dislikePost,
   editPost,
   deletePost,
+  addPostComment,
+  upvotePostComment,
+  downvotePostComment,
+  deletePostComment,
+  editPostComment,
 };
