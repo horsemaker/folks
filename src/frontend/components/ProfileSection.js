@@ -13,10 +13,27 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { followUser, unfollowUser } from "../features";
 import { EditProfileModal } from "./EditProfileModal";
+import { ShowListModal } from "./ShowListModal";
 
 const ProfileSection = ({ profile }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const {
+    isOpen: isOpenEditProfile,
+    onOpen: onOpenEditProfile,
+    onClose: onCloseEditProfile,
+  } = useDisclosure();
+  const initialRefEditProfile = useRef(null);
+
+  const {
+    isOpen: isOpenFollowing,
+    onOpen: onOpenFollowing,
+    onClose: onCloseFollowing,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenFollowers,
+    onOpen: onOpenFollowers,
+    onClose: onCloseFollowers,
+  } = useDisclosure();
 
   const {
     _id,
@@ -74,7 +91,12 @@ const ProfileSection = ({ profile }) => {
             </Text>
           </Flex>
           {user.username === username ? (
-            <Button px={4} fontSize={"sm"} rounded={"full"} onClick={onOpen}>
+            <Button
+              px={4}
+              fontSize={"sm"}
+              rounded={"full"}
+              onClick={onOpenEditProfile}
+            >
               Edit
             </Button>
           ) : user.following.find((user) => user.username === username) ? (
@@ -111,13 +133,33 @@ const ProfileSection = ({ profile }) => {
           </Link>
         </Flex>
         <Flex gap={"2"}>
-          <Flex gap={"1"} alignItems={"center"}>
+          <Flex
+            gap={"1"}
+            cursor={"pointer"}
+            alignItems={"center"}
+            borderBottomWidth={"2px"}
+            borderBottomColor={"transparent"}
+            _hover={{
+              borderBottomColor: useColorModeValue("gray.400", "gray.500"),
+            }}
+            onClick={onOpenFollowing}
+          >
             <Text fontWeight={"bold"}>{following.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Following
             </Text>
           </Flex>
-          <Flex gap={"1"} alignItems={"center"}>
+          <Flex
+            gap={"1"}
+            cursor={"pointer"}
+            alignItems={"center"}
+            borderBottomWidth={"2px"}
+            borderBottomColor={"transparent"}
+            _hover={{
+              borderBottomColor: useColorModeValue("gray.400", "gray.500"),
+            }}
+            onClick={onOpenFollowers}
+          >
             <Text fontWeight={"bold"}>{followers.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Followers
@@ -126,10 +168,22 @@ const ProfileSection = ({ profile }) => {
         </Flex>
       </Flex>
       <EditProfileModal
-        isOpen={isOpen}
-        onClose={onClose}
-        initialRef={initialRef}
+        isOpen={isOpenEditProfile}
+        onClose={onCloseEditProfile}
+        initialRef={initialRefEditProfile}
         profile={profile}
+      />
+      <ShowListModal
+        isOpen={isOpenFollowing}
+        onClose={onCloseFollowing}
+        title={"Followering"}
+        list={following}
+      />
+      <ShowListModal
+        isOpen={isOpenFollowers}
+        onClose={onCloseFollowers}
+        title={"Followers"}
+        list={followers}
       />
     </Flex>
   );
