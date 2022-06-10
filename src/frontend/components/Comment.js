@@ -29,12 +29,22 @@ import {
   upvotePostComment,
 } from "../features";
 import { EditCommentModal } from "./EditCommentModal";
+import { ShowListModal } from "./ShowListModal";
 
 const Comment = ({ postId, comment }) => {
   const colorModeValue = useColorModeValue(true, false);
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const {
+    isOpen: isOpenEditComment,
+    onOpen: onOpenEditComment,
+    onClose: onCloseEditComment,
+  } = useDisclosure();
+  const initialRefEditComment = useRef(null);
+  const {
+    isOpen: isOpenUpvotedBy,
+    onOpen: onOpenUpvotedBy,
+    onClose: onCloseUpvotedBy,
+  } = useDisclosure();
 
   const {
     _id,
@@ -117,7 +127,7 @@ const Comment = ({ postId, comment }) => {
                 bg={colorModeValue ? "white" : "gray.900"}
                 borderColor={colorModeValue ? "gray.200" : "gray.700"}
               >
-                <MenuItem icon={<MdEdit />} onClick={onOpen}>
+                <MenuItem icon={<MdEdit />} onClick={onOpenEditComment}>
                   Edit Comment
                 </MenuItem>
                 <MenuItem icon={<MdDelete />} onClick={handleDeletePostComment}>
@@ -177,13 +187,48 @@ const Comment = ({ postId, comment }) => {
           <Box></Box>
           <Box></Box>
         </Flex>
+        {upvotedBy.length !== 0 &&
+          (upvotedBy.length > 1 ? (
+            <Text
+              cursor={"pointer"}
+              fontSize={"sm"}
+              _hover={{
+                textDecoration: "underline",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenUpvotedBy();
+              }}
+            >
+              Upvoted by {`${upvotedBy[0].firstName} ${upvotedBy[0].lastName}`}{" "}
+              and {upvotedBy.length - 1} others
+            </Text>
+          ) : (
+            <Text
+              cursor={"pointer"}
+              fontSize={"sm"}
+              _hover={{ textDecoration: "underline" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenUpvotedBy();
+              }}
+            >
+              Upvoted by {`${upvotedBy[0].firstName} ${upvotedBy[0].lastName}`}
+            </Text>
+          ))}
       </Flex>
       <EditCommentModal
-        isOpen={isOpen}
-        onClose={onClose}
-        initialRef={initialRef}
+        isOpen={isOpenEditComment}
+        onClose={onCloseEditComment}
+        initialRef={initialRefEditComment}
         postId={postId}
         comment={comment}
+      />
+      <ShowListModal
+        isOpen={isOpenUpvotedBy}
+        onClose={onCloseUpvotedBy}
+        title={"Upvoted By"}
+        list={upvotedBy}
       />
     </Flex>
   );
