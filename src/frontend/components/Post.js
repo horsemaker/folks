@@ -38,12 +38,22 @@ import {
   removePostFromBookmark,
 } from "../features";
 import { EditPostModal } from "./EditPostModal";
+import { ShowListModal } from "./ShowListModal";
 
 const Post = ({ post }) => {
   const colorModeValue = useColorModeValue(true, false);
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const {
+    isOpen: isOpenEditPost,
+    onOpen: onOpenEditPost,
+    onClose: onCloseEditPost,
+  } = useDisclosure();
+  const initialRefEditPost = useRef(null);
+  const {
+    isOpen: isOpenLikedBy,
+    onOpen: onOpenLikedBy,
+    onClose: onCloseLikedBy,
+  } = useDisclosure();
 
   const {
     _id,
@@ -101,7 +111,7 @@ const Post = ({ post }) => {
           duration: 3000,
           isClosable: true,
         });
-        onClose();
+        onCloseEditPost();
       }
       setIsEditing(false);
     } else {
@@ -186,7 +196,7 @@ const Post = ({ post }) => {
                 borderColor={colorModeValue ? "gray.200" : "gray.700"}
                 onClick={(e) => e.stopPropagation()}
               >
-                <MenuItem icon={<MdEdit />} onClick={onOpen}>
+                <MenuItem icon={<MdEdit />} onClick={onOpenEditPost}>
                   Edit Post
                 </MenuItem>
                 <MenuItem icon={<MdDelete />} onClick={handleDeletePost}>
@@ -271,11 +281,38 @@ const Post = ({ post }) => {
             )}
           </Flex>
         </Flex>
+        {likedBy.length !== 0 &&
+          (likedBy.length > 1 ? (
+            <Text
+              fontSize={"sm"}
+              _hover={{
+                textDecoration: "underline",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenLikedBy();
+              }}
+            >
+              Liked by {`${likedBy[0].firstName} ${likedBy[0].lastName}`} and{" "}
+              {likedBy.length - 1} others
+            </Text>
+          ) : (
+            <Text
+              fontSize={"sm"}
+              _hover={{ textDecoration: "underline" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenLikedBy();
+              }}
+            >
+              Liked by {`${likedBy[0].firstName} ${likedBy[0].lastName}`}
+            </Text>
+          ))}
       </Flex>
       <EditPostModal
-        isOpen={isOpen}
-        onClose={onClose}
-        initialRef={initialRef}
+        isOpen={isOpenEditPost}
+        onClose={onCloseEditPost}
+        initialRef={initialRefEditPost}
         firstName={firstName}
         lastName={lastName}
         avatarURL={avatarURL}
@@ -285,6 +322,12 @@ const Post = ({ post }) => {
         postData={postData}
         isEditing={isEditing}
         handleEditPost={handleEditPost}
+      />
+      <ShowListModal
+        isOpen={isOpenLikedBy}
+        onClose={onCloseLikedBy}
+        title={"Liked By"}
+        list={likedBy}
       />
     </Flex>
   );
