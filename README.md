@@ -7,6 +7,10 @@ Folks is everything you need. Share precious moments, memories & updates of your
 
 [folks.netlify.app/](https://folks.netlify.app/)
 
+## Demo
+
+https://user-images.githubusercontent.com/60985700/173053110-f8f89e03-adde-4db9-a647-e4a4becda4df.mp4
+
 
 ## Features
 
