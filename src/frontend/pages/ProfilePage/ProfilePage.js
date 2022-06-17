@@ -21,10 +21,15 @@ const ProfilePage = () => {
   const { username } = useParams();
 
   const {
-    profile: { data: profile, loading: profileLoading, error: profileError },
-    posts: { data: posts, loading: postsLoading, error: postsError },
+    profile: {
+      data: userProfile,
+      loading: profileLoading,
+      error: profileError,
+    },
+    posts: { data: userPosts, loading: postsLoading, error: postsError },
   } = useSelector((state) => state.user);
   const { data: users } = useSelector((state) => state.users);
+  const { data: posts } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -65,7 +70,7 @@ const ProfilePage = () => {
 
   return (
     <Flex gap={"12"} position={"relative"}>
-      {profile === null ? (
+      {userProfile === null ? (
         profileLoading ? (
           <Flex
             direction={"column"}
@@ -93,8 +98,8 @@ const ProfilePage = () => {
         )
       ) : (
         <Flex direction={"column"} flexGrow={"1"} gap={"4"}>
-          <ProfileSection profile={profile} />
-          {posts === null ? (
+          <ProfileSection profile={userProfile} />
+          {userPosts === null ? (
             postsLoading ? (
               <Flex
                 direction={"column"}
@@ -121,7 +126,7 @@ const ProfilePage = () => {
               </Flex>
             )
           ) : (
-            <PostsSection posts={posts} />
+            <PostsSection posts={userPosts} />
           )}
         </Flex>
       )}
