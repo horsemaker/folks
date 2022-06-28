@@ -59,7 +59,7 @@ const authSlice = createSlice({
     },
     [signup.fulfilled]: (state, { payload }) => {
       state.token = payload.encodedToken;
-      state.token = payload.createdUser;
+      state.user = payload.createdUser;
       state.loading = false;
     },
     [signup.rejected]: (state) => {
