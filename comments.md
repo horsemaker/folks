@@ -1,0 +1,1 @@
+- Fixed auth user state action on sign up
